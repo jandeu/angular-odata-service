@@ -1,0 +1,28 @@
+{
+    "name": "angular-odata-service",
+    "version": "0.1.0",
+    "description": "Simple angular 1.x service for odata written in typescript",
+    "main": "gulpfile.js",
+    "scripts": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jandeu/angular-odata-service.git"
+    },
+    "keywords": [
+        "angular",
+        "odata"
+    ],
+    "author": "Jan Deutschl",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jandeu/angular-odata-service/issues"
+    },
+    "homepage": "https://github.com/jandeu/angular-odata-service#readme",
+    "devDependencies": {
+        "gulp": "3.9.1",
+        "gulp-typescript":"2.12.2",
+        "rimraf":"2.5.2"
+    }
+}
