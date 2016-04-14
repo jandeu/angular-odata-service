@@ -1,22 +1,27 @@
 module angular.odata {
-    export interface IQueryOptions {
+    export interface IODataQueryOptions {
         select?: string;
         filter?: string;
-        expand?: string;
+        expand?: IExpandFilter | IExpandFilter[] | string;
         orderBy?: string;
         count?: boolean | string;
         top?: number | string;
         skip?: number | string;
-
-        /**Custom query string params*/
-        custom?: ICustomParameter
     }
-
-    export interface ICustomParameter {
-        [K: string]: any;
+    
+    export interface IExpandFilter{
+        [K:string]:IODataQueryOptions;
     }
-
-    export interface IValueResult<T> {
-        value: T[];
+    
+    export interface ICustomFilter{
+        [K:string]:any;
+    }
+    
+    export interface IODataColection<T>{
+        value:T[];
+    }
+    
+    export interface ICompositeKey{
+        [K:string]:string|number;
     }
 }
