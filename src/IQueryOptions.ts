@@ -2,15 +2,12 @@ module angular.odata {
     export interface IODataQueryOptions {
         select?: string;
         filter?: string;
-        expand?: IExpandFilter | IExpandFilter[] | string;
+        expand?:  string;
         orderBy?: string;
         count?: boolean | string;
         top?: number | string;
         skip?: number | string;
-    }
-    
-    export interface IExpandFilter{
-        [K:string]:IODataQueryOptions;
+        custom?:ICustomFilter;
     }
     
     export interface ICustomFilter{
