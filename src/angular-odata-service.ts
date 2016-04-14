@@ -25,7 +25,7 @@ angular.module("angular-odata-service", [])
                         params.$filter = query.filter;
                     if (query.expand) {
                         if (angular.isString(query.expand))
-                            params.$filter = query.expand;
+                            params.$expand = query.expand;
 
                     }
                     if (query.orderBy)
@@ -35,14 +35,16 @@ angular.module("angular-odata-service", [])
                     if (query.top)
                         params.$top = query.top;
                     if (query.skip)
-                        params = query.skip;
+                        params.$skip = query.skip;
+                    if (query.search)
+                        params.$search = query.search;
                     if (query.custom) {
                         angular.copy(query.custom, params);
                     }
                     return params;
                 };
 
-                var buildUrl = (entity?: string, key?: number | string | ng.odata.ICompositeKey, actionOrFunctionName?:string) => {
+                var buildUrl = (entity?: string, key?: number | string | ng.odata.ICompositeKey, actionOrFunctionName?: string) => {
                     var parts = [];
                     if (provider.routePrefix && provider.routePrefix != "")
                         parts.push(provider.routePrefix);
@@ -68,7 +70,7 @@ angular.module("angular-odata-service", [])
                     } else {
                         parts.push(entity);
                     }
-                    if(actionOrFunctionName){
+                    if (actionOrFunctionName) {
                         parts.push(provider.namespace + "." + actionOrFunctionName);
                     }
 

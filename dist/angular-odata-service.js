@@ -24,7 +24,7 @@ angular.module("angular-odata-service", [])
                         params.$filter = query.filter;
                     if (query.expand) {
                         if (angular.isString(query.expand))
-                            params.$filter = query.expand;
+                            params.$expand = query.expand;
                     }
                     if (query.orderBy)
                         params.$orderBy = query.orderBy;
@@ -33,7 +33,9 @@ angular.module("angular-odata-service", [])
                     if (query.top)
                         params.$top = query.top;
                     if (query.skip)
-                        params = query.skip;
+                        params.$skip = query.skip;
+                    if (query.search)
+                        params.$search = query.search;
                     if (query.custom) {
                         angular.copy(query.custom, params);
                     }
