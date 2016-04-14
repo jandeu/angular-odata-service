@@ -1,0 +1,26 @@
+{
+  "name": "angular-odata-service",
+  "description": "Simple angular 1.x service for odata written in typescript",
+  "main": "./dist/angular-odata-service.js",
+  "authors": [
+    "Jan Deutschl"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "odata"
+  ],
+  "homepage": "https://github.com/jandeu/angular-odata-service",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+      "angular": ">=1.4"
+  }
+}

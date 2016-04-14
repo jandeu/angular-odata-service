@@ -1,6 +1,5 @@
-var app = angular.module("jandeu.odata-demo", ["jandeu.odata"]);
+var app = angular.module("demo", ["angular-odata-service"]);
 
-app.config(["odataProvider", (odataProvider:ng.odata.IODataServiceProvider)=>{
-    odataProvider.routePrefix = "/odata/"
-}]);
-
+app.config((ODataProvider:ng.odata.IODataProvider)=>{
+    ODataProvider.routePrefix = "odata";
+});

@@ -2,15 +2,13 @@
     "compilerOptions": {
         "target": "es5",
         "sourceMap": true,
-        "outFile": "./dist/angular-odata-service.js"
+        "outFile": "./dist/angular-odata-service.js",
+        "declaration": true
     },
-    "files": [
-        "./typings/jquery/jquery.d.ts",
-        "./typings/angularjs/angular.d.ts",
-        "./src/IQueryOptions.ts",
-        "./src/ODataQueryStringBuilder.ts",
-        "./src/ODataProvider.ts",
-        "./src/ODataService.ts",
-        "./src/app.ts"
+    "exclude": [
+        "demo",
+        "bower_components",
+        "node_modules",
+        "dist"
     ]
 }

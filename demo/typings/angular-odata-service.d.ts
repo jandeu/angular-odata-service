@@ -1,5 +1,10 @@
-module angular.odata {
-    export interface IQueryOptions {
+declare module angular.odata {
+    interface IODataProvider extends ng.IServiceProvider {
+        routePrefix: string;
+    }
+}
+declare module angular.odata {
+    interface IQueryOptions {
         select?: string;
         filter?: string;
         expand?: string;
@@ -7,16 +12,13 @@ module angular.odata {
         count?: boolean | string;
         top?: number | string;
         skip?: number | string;
-
         /**Custom query string params*/
-        custom?: ICustomParameter
+        custom?: ICustomParameter;
     }
-
-    export interface ICustomParameter {
+    interface ICustomParameter {
         [K: string]: any;
     }
-
-    export interface IValueResult<T> {
+    interface IValueResult<T> {
         value: T[];
     }
 }
