@@ -67,8 +67,9 @@ angular.module("angular-odata-service", [])
                                 parts.push(entity + "(" + compositeKeyParts.join(",") + ")");
                             }
                         }
-                    } else {
-                        parts.push(entity);
+                        else {
+                            parts.push(entity);
+                        }
                     }
                     if (actionOrFunctionName) {
                         parts.push(provider.namespace + "." + actionOrFunctionName);
@@ -121,8 +122,8 @@ angular.module("angular-odata-service", [])
 
                 return service;
 
-            }  
-        }];
+            }]
+        };
 
         return provider;
     });
