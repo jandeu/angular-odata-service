@@ -4,5 +4,5 @@ app.config(function (odataProvider) {
     odataProvider.setNamespace("ns");
 });
 app.controller("mainCtrl", function (odata) {
-    odata.function("myFunc");
+    odata.get("test", { top: 10 });
 });

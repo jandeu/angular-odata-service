@@ -6,5 +6,5 @@ app.config((odataProvider)=>{
 });
 
 app.controller("mainCtrl", (odata)=>{
-    odata.function("myFunc");
+    odata.get("test", {top:10});
 });

@@ -27,7 +27,7 @@ angular.module("angular-odata-service", [])
                             params.$expand = query.expand;
                     }
                     if (query.orderBy)
-                        params.$orderBy = query.orderBy;
+                        params.$orderby = query.orderBy;
                     if (query.count)
                         params.$count = query.count;
                     if (query.top)
@@ -37,7 +37,12 @@ angular.module("angular-odata-service", [])
                     if (query.search)
                         params.$search = query.search;
                     if (query.custom) {
-                        angular.copy(query.custom, params);
+                        for (var key in query.custom) {
+                            if (!angular.isObject(query.custom[key]))
+                                params[key] = query.custom[key];
+                            else
+                                params[key] = JSON.stringify(query.custom[key]);
+                        }
                     }
                     return params;
                 };
@@ -46,11 +51,19 @@ angular.module("angular-odata-service", [])
                     if (provider.routePrefix && provider.routePrefix != "")
                         parts.push(provider.routePrefix);
                     if (entity) {
+                        var entityName = "";
+                        var navigationPropertyName = null;
+                        if (angular.isString(entity))
+                            entityName = entity;
+                        else {
+                            entityName = entity.entity;
+                            navigationPropertyName = entity.navigationProperty;
+                        }
                         if (key) {
                             if (angular.isString(key))
-                                parts.push(entity + "('" + key + "')");
+                                parts.push(entityName + "('" + key + "')");
                             else if (angular.isNumber(key))
-                                parts.push(entity + "(" + key + ")");
+                                parts.push(entityName + "(" + key + ")");
                             else {
                                 var compositeKeyParts = [];
                                 for (var compositeKeyPart in key) {
@@ -61,12 +74,14 @@ angular.module("angular-odata-service", [])
                                         compositeKeyParts.push(compositeKeyPart + "='" + key[compositeKeyPart] + "'");
                                     }
                                 }
-                                parts.push(entity + "(" + compositeKeyParts.join(",") + ")");
+                                parts.push(entityName + "(" + compositeKeyParts.join(",") + ")");
                             }
                         }
                         else {
-                            parts.push(entity);
+                            parts.push(entityName);
                         }
+                        if (navigationPropertyName)
+                            parts.push(navigationPropertyName);
                     }
                     if (actionOrFunctionName) {
                         parts.push(provider.namespace + "." + actionOrFunctionName);
@@ -74,16 +89,24 @@ angular.module("angular-odata-service", [])
                     return parts.join("/");
                 };
                 var service = {
-                    get: function (entity, odataQueryOptions) {
+                    get: function (entity, odataQuery) {
                         var url = buildUrl(entity);
                         return $http.get(url, {
-                            params: buildQuery(odataQueryOptions)
+                            params: buildQuery(odataQuery)
                         });
                     },
-                    getById: function (entity, key, odataQueryOptions) {
+                    getById: function (entity, key, odataQuery) {
                         var url = buildUrl(entity, key);
                         return $http.get(url, {
-                            params: buildQuery(odataQueryOptions)
+                            params: buildQuery(odataQuery)
+                        });
+                    },
+                    getCount: function (entity, odataQuery) {
+                        var url = buildUrl(entity) + "/$count";
+                        return $http.get(url, {
+                            params: buildQuery(odataQuery)
+                        }).success(function (resp) {
+                            return Number(resp);
                         });
                     },
                     patch: function (entity, key, data) {

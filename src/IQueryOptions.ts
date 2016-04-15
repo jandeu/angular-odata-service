@@ -1,5 +1,5 @@
 module angular.odata {
-    export interface IODataQueryOptions {
+    export interface IODataQuery {
         /**
          * Limit the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description.
          */
@@ -42,11 +42,20 @@ module angular.odata {
         [K:string]:any;
     }
     
-    export interface IODataColection<T>{
+    export interface IODataColectionResult<T>{
         value:T[];
+    }
+    
+    export interface IODataValueResult<T>{
+        value:T;
     }
     
     export interface ICompositeKey{
         [K:string]:string|number;
+    }
+    
+    export interface IEntity{
+        entity:string;
+        navigationProperty:string;
     }
 }
