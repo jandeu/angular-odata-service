@@ -139,4 +139,3 @@ angular.module("angular-odata-service", [])
     };
     return provider;
 });
-//# sourceMappingURL=angular-odata-service.js.map

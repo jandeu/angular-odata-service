@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es5",
         "sourceMap": true,
-        "outFile": "./dist/angular-odata-service.js",
+        "outFile": "angular-odata-service.js",
         "declaration": true
     },
     "exclude": [
