@@ -1,6 +1,6 @@
 {
   "name": "angular-odata-service",
-  "description": "Simple angular 1.x service for odata written in typescript",
+  "description": "Simple angular 1.x service for odata v4 endpoints.",
   "main": "./dist/angular-odata-service.js",
   "authors": [
     "Jan Deutschl"
