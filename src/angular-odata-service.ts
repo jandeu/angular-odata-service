@@ -28,7 +28,7 @@ angular.module("angular-odata-service", [])
                                     params[key] = JSON.stringify(query.custom[key]);
                             }
                         } else {
-                            params["$" + p] = query[p];
+                            params["$" + p.toLowerCase()] = query[p];
                         }
                     }
                     return params;
