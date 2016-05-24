@@ -8,11 +8,18 @@ It's meant for projects, where angular resources are unnecessary level of abstra
 But if you prefer to work with resources, check out this project on github: [ODataAngularResources](https://github.com/devnixs/ODataAngularResources)
 
 ## Installation
-1. Download the repository
+1. Download the repository, or install with *Bower*
+```
+    git clone https://github.com/jandeu/angular-odata-service.git
+    
+    bower install angular-odata-service
+```
+
 2. Include the file **dist/angular-odata-resource.js** into your project
-3. Be sure to register the module "angular-odata-service" in your module definition : 
-```javascript
-var myApp = angular.module('myApp',['angular-odata-service']);
+3. Be sure to register the module "angular-odata-service" in your app module : 
+
+```js
+    var myApp = angular.module('myApp',['angular-odata-service']);
 ```
 
 ## Configuration
