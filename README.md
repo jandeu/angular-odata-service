@@ -37,7 +37,7 @@ myApp.config(function (odataProvider) {
 ### Getting entities
 For example the query below will generate this http GET request: **http://services.odata.org/V3/Northwind/Northwind.svc/Products?$filter=UnitsInStock+gt+20&$orderby=ReorderLevel&$select=ProductName,UnitsInStock&$top=10**
 ```js
-myApp.controller("myCtrl", (odata) => {
+myApp.controller("myCtrl", function (odata) {
     odata.get("Products",
         {
             select: "ProductName,UnitsInStock",
@@ -50,5 +50,10 @@ myApp.controller("myCtrl", (odata) => {
 ### Getting entity by it's key
 
 
+* Number
+* String
+* Composite key
+
+
 ## Contributions
-Want to contribute? Awesome! 
+Contributions welcomed!

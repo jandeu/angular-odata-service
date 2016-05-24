@@ -18,30 +18,17 @@ angular.module("angular-odata-service", [])
                     if (!query)
                         return null;
                     var params = {};
-                    if (query.select)
-                        params.$select = query.select;
-                    if (query.filter)
-                        params.$filter = query.filter;
-                    if (query.expand) {
-                        if (angular.isString(query.expand))
-                            params.$expand = query.expand;
-                    }
-                    if (query.orderBy)
-                        params.$orderby = query.orderBy;
-                    if (query.count)
-                        params.$count = query.count;
-                    if (query.top)
-                        params.$top = query.top;
-                    if (query.skip)
-                        params.$skip = query.skip;
-                    if (query.search)
-                        params.$search = query.search;
-                    if (query.custom) {
-                        for (var key in query.custom) {
-                            if (!angular.isObject(query.custom[key]))
-                                params[key] = query.custom[key];
-                            else
-                                params[key] = JSON.stringify(query.custom[key]);
+                    for (var p in query) {
+                        if (p === "custom") {
+                            for (var key in query.custom) {
+                                if (!angular.isObject(query.custom[key]))
+                                    params[key] = query.custom[key];
+                                else
+                                    params[key] = JSON.stringify(query.custom[key]);
+                            }
+                        }
+                        else {
+                            params["$" + p] = query[p];
                         }
                     }
                     return params;

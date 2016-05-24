@@ -44,6 +44,9 @@ module angular.odata {
     
     export interface IODataColectionResult<T>{
         value:T[];
+        "@odata.nextLink"?:string;
+        "@odata.count"?:number;
+        "@odata.context"?:string;
     }
     
     export interface IODataValueResult<T>{
