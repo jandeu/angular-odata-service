@@ -33,7 +33,8 @@ myApp.config(function (odataProvider) {
 });
 ```
 
-## Usage
+## Usage Examples
+
 ### Getting entities
 For example the query below will generate this http GET request: **http://services.odata.org/V3/Northwind/Northwind.svc/Products?$filter=UnitsInStock+gt+20&$orderby=ReorderLevel&$select=ProductName,UnitsInStock&$top=10**
 ```js
@@ -49,11 +50,34 @@ myApp.controller("myCtrl", function (odata) {
 ```
 ### Getting entity by it's key
 
+```js
+myApp.controller("myCtrl", function (odata) {
+    odata.getById("Products",1);
+});
+```
+*Note that entity key might be:*
+* Number e.g. 1
+* String e.g. "first"
+* Composite key e.g { KeyPart1: 1, KeyPart2:"two", ...}
 
-* Number
-* String
-* Composite key
+### Other supported methods
+
+**POST, PUT, PATCH, DELETE**
+
+### Action and Function
+
+In OData *Context*, *Collections* or *Entities* might also have actions and functions. These are bassically HTTP POST or GET. The action or function name is preffixed by namespace if supplied in configuration.
+
+```js
+action(actionName, data, entity?, key?)
+
+function(functionName, entity?, key?)
+```
+
+*Ommit the key parameter to call a action or function on collection*
+
+*Ommit the key parameter and entity to call a action or function on context*
 
 
 ## Contributions
-Contributions welcomed!
+Contributions and feedback welcomed!
