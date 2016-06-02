@@ -21,14 +21,20 @@ angular.module("angular-odata-service", [])
                     for (var p in query) {
                         if (p === "custom") {
                             for (var key in query.custom) {
-                                if (!angular.isObject(query.custom[key]))
-                                    params[key] = query.custom[key];
-                                else
-                                    params[key] = JSON.stringify(query.custom[key]);
+                                var value = query.custom[key];
+                                if (value && value != "") {
+                                    if (!angular.isObject(value))
+                                        params[key] = value;
+                                    else
+                                        params[key] = JSON.stringify(value);
+                                }
                             }
                         }
                         else {
-                            params["$" + p.toLowerCase()] = query[p];
+                            var value = query[p];
+                            if (value && value != "") {
+                                params["$" + p.toLowerCase()] = value;
+                            }
                         }
                     }
                     return params;
