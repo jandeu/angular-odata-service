@@ -39,6 +39,42 @@ angular.module("angular-odata-service", [])
                     }
                     return params;
                 };
+                var buildRequestConfig = function (config, query) {
+                    if (!query)
+                        return config;
+                    var odataRequestParams = {};
+                    for (var p in query) {
+                        if (p === "custom") {
+                            for (var key in query.custom) {
+                                var value = query.custom[key];
+                                if (value && value != "") {
+                                    if (!angular.isObject(value))
+                                        odataRequestParams[key] = value;
+                                    else
+                                        odataRequestParams[key] = JSON.stringify(value);
+                                }
+                            }
+                        }
+                        else {
+                            var value = query[p];
+                            if (value && value != "") {
+                                odataRequestParams["$" + p.toLowerCase()] = value;
+                            }
+                        }
+                    }
+                    if (!config) {
+                        config = { params: odataRequestParams };
+                    }
+                    else {
+                        if (angular.isDefined(config.params)) {
+                            angular.extend(config.params, odataRequestParams);
+                        }
+                        else {
+                            config.params = odataRequestParams;
+                        }
+                    }
+                    return config;
+                };
                 var buildUrl = function (entity, key, actionOrFunctionName) {
                     var parts = [];
                     if (provider.routePrefix && provider.routePrefix != "")
@@ -82,49 +118,46 @@ angular.module("angular-odata-service", [])
                     return parts.join("/");
                 };
                 var service = {
-                    get: function (entity, odataQuery) {
+                    get: function (entity, odataQuery, config) {
                         var url = buildUrl(entity);
-                        return $http.get(url, {
-                            params: buildQuery(odataQuery)
-                        });
+                        var requestConfig = buildRequestConfig(config, odataQuery);
+                        return $http.get(url, requestConfig);
                     },
-                    getById: function (entity, key, odataQuery) {
+                    getById: function (entity, key, odataQuery, config) {
                         var url = buildUrl(entity, key);
-                        return $http.get(url, {
-                            params: buildQuery(odataQuery)
-                        });
+                        var requestConfig = buildRequestConfig(config, odataQuery);
+                        return $http.get(url, requestConfig);
                     },
-                    getCount: function (entity, odataQuery) {
+                    getCount: function (entity, odataQuery, config) {
                         var url = buildUrl(entity) + "/$count";
-                        return $http.get(url, {
-                            params: buildQuery(odataQuery)
-                        }).success(function (resp) {
+                        var requestConfig = buildRequestConfig(config, odataQuery);
+                        return $http.get(url, requestConfig).success(function (resp) {
                             return Number(resp);
                         });
                     },
-                    patch: function (entity, key, data) {
+                    patch: function (entity, key, data, config) {
                         var url = buildUrl(entity, key);
-                        return $http.patch(url, data);
+                        return $http.patch(url, data, config);
                     },
-                    post: function (entity, key, data) {
+                    post: function (entity, key, data, config) {
                         var url = buildUrl(entity, key);
-                        return $http.post(url, data);
+                        return $http.post(url, data, config);
                     },
-                    put: function (entity, key, data) {
+                    put: function (entity, key, data, config) {
                         var url = buildUrl(entity, key);
-                        return $http.put(url, data);
+                        return $http.put(url, data, config);
                     },
-                    delete: function (entity, key) {
+                    delete: function (entity, key, config) {
                         var url = buildUrl(entity, key);
-                        return $http.delete(url);
+                        return $http.delete(url, config);
                     },
-                    action: function (actionName, data, entity, key) {
+                    action: function (actionName, data, entity, key, config) {
                         var url = buildUrl(entity, key, actionName);
-                        return $http.post(url, data);
+                        return $http.post(url, data, config);
                     },
-                    function: function (functionName, entity, key) {
+                    function: function (functionName, entity, key, config) {
                         var url = buildUrl(entity, key, functionName);
-                        return $http.get(url);
+                        return $http.get(url, config);
                     }
                 };
                 return service;

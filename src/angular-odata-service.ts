@@ -40,6 +40,43 @@ angular.module("angular-odata-service", [])
                     return params;
                 };
 
+                var buildRequestConfig = (config: ng.IRequestShortcutConfig, query?: ng.odata.IODataQuery): ng.IRequestShortcutConfig => {
+
+                    if (!query)
+                        return config;
+
+                    var odataRequestParams = <any>{};
+                    for (var p in query) {
+                        if (p === "custom") {
+                            for (var key in query.custom) {
+                                let value = query.custom[key];
+                                if (value && value != "") {
+                                    if (!angular.isObject(value))
+                                        odataRequestParams[key] = value;
+                                    else
+                                        odataRequestParams[key] = JSON.stringify(value);
+                                }
+                            }
+                        } else {
+                            let value = query[p];
+                            if (value && value != "") {
+                                odataRequestParams["$" + p.toLowerCase()] = value;
+                            }
+                        }
+                    }
+                    if (!config) {
+                        config = { params: odataRequestParams };
+                    } else {
+                        if (angular.isDefined(config.params)) {
+                            angular.extend(config.params, odataRequestParams);
+                        } else {
+                            config.params = odataRequestParams;
+                        }
+                    }
+
+                    return config;
+                };
+
                 var buildUrl = (entity?: string | ng.odata.IEntity, key?: number | string | ng.odata.ICompositeKey, actionOrFunctionName?: string) => {
                     var parts = [];
                     if (provider.routePrefix && provider.routePrefix != "")
@@ -87,51 +124,49 @@ angular.module("angular-odata-service", [])
                 };
 
 
+
                 var service: ng.odata.IODataService = {
-                    get: <T>(entity, odataQuery) => {
+                    get: <T>(entity, odataQuery, config) => {
                         var url = buildUrl(entity);
-                        return $http.get(url, {
-                            params: buildQuery(odataQuery)
-                        });
+                        var requestConfig = buildRequestConfig(config, odataQuery);
+                        return $http.get(url, requestConfig);
                     },
 
-                    getById: <T>(entity, key, odataQuery) => {
+                    getById: <T>(entity, key, odataQuery, config) => {
                         var url = buildUrl(entity, key);
-                        return $http.get(url, {
-                            params: buildQuery(odataQuery)
-                        });
+                        var requestConfig = buildRequestConfig(config, odataQuery);
+                        return $http.get(url, requestConfig);
                     },
-                    getCount: (entity, odataQuery) => {
+                    getCount: (entity, odataQuery,config) => {
                         var url = buildUrl(entity) + "/$count";
-                        return $http.get<number>(url, {
-                            params: buildQuery(odataQuery)
-                        }).success(resp => {
+                        var requestConfig = buildRequestConfig(config, odataQuery);
+                        return $http.get<number>(url, requestConfig).success(resp => {
                             return Number(resp);
                         });
                     },
-                    patch: <T>(entity, key, data) => {
-                        var url = buildUrl(entity, key);
-                        return $http.patch(url, data);
+                    patch: <T>(entity, key, data, config) => {
+                        var url = buildUrl(entity, key);                        
+                        return $http.patch(url, data, config);
                     },
-                    post: <T>(entity, key, data) => {
+                    post: <T>(entity, key, data, config) => {
                         var url = buildUrl(entity, key);
-                        return $http.post(url, data);
+                        return $http.post(url, data, config);
                     },
-                    put: <T>(entity, key, data) => {
+                    put: <T>(entity, key, data,config) => {
                         var url = buildUrl(entity, key);
-                        return $http.put(url, data);
+                        return $http.put(url, data, config);
                     },
-                    delete: <T>(entity, key) => {
+                    delete: <T>(entity, key, config) => {
                         var url = buildUrl(entity, key);
-                        return $http.delete(url);
+                        return $http.delete(url, config);
                     },
-                    action: <T>(actionName, data, entity, key) => {
+                    action: <T>(actionName, data, entity, key, config) => {
                         var url = buildUrl(entity, key, actionName);
-                        return $http.post(url, data);
+                        return $http.post(url, data, config);
                     },
-                    function: <T>(functionName, entity, key) => {
+                    function: <T>(functionName, entity, key, config) => {
                         var url = buildUrl(entity, key, functionName);
-                        return $http.get(url);
+                        return $http.get(url, config);
                     }
 
                 };
