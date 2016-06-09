@@ -14,32 +14,6 @@ angular.module("angular-odata-service", [])
                 provider.namespace = value;
             },
             $get: ["$http", ($http: ng.IHttpService) => {
-
-                var buildQuery = (query: ng.odata.IODataQuery) => {
-                    if (!query)
-                        return null;
-                    var params = <any>{};
-                    for (var p in query) {
-                        if (p === "custom") {
-                            for (var key in query.custom) {
-                                let value = query.custom[key];
-                                if (value && value != "") {
-                                    if (!angular.isObject(value))
-                                        params[key] = value;
-                                    else
-                                        params[key] = JSON.stringify(value);
-                                }
-                            }
-                        } else {
-                            let value = query[p];
-                            if (value && value != "") {
-                                params["$" + p.toLowerCase()] = value;
-                            }
-                        }
-                    }
-                    return params;
-                };
-
                 var buildRequestConfig = (config: ng.IRequestShortcutConfig, query?: ng.odata.IODataQuery): ng.IRequestShortcutConfig => {
 
                     if (!query)
