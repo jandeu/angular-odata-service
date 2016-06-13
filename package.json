@@ -1,6 +1,6 @@
 {
   "name": "angular-odata-service",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple angular 1.x service for odata written in typescript",
   "main": "gulpfile.js",
   "scripts": {
